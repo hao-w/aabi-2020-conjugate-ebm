@@ -155,7 +155,9 @@ VAEs are trained by maximizing the probability of the data. This is done by defi
 \includegraphics[width=0.5\textwidth]{figures/confusion_matrix_22row_cifar10.pdf}
 \label{fig:cebm-confusion-matrices}
 }
-\caption{K-NN results using latent representations learned by CEBM on CIFAR-10.}
+\caption{Nearest Neighbors in the pixel space and the latent space of CEBM and VAE.}
+
+% \caption{K-NN results using latent representations learned by CEBM on CIFAR-10.}
 \end{figure*}
 %\begin{comment}
 % This leads us to consider the question whether it is possible to develop alternatives to VAE-based architectures that can be used to learning representations in a fully unsupervised manner, but do not rely on a generator that tries to faithfully reconstruct the input. It is possible that models that eliminate the requirement of a generator can learn more meaningful representations, in the sense that it becomes easier to discard factors of variation that give rise to variation in pixel space, but should be considered noise.
@@ -926,10 +928,8 @@ $\mathcal{B}[x'] \gets x'$\;
 
 
 \newpage
-\section{Additional Results}
-\label{app:sec:additional-results}
 
-\subsection{Confusion Matrices on 1-NN Classification}
+\section{Confusion Matrices on 1-NN Classification}
 \label{appendix-sec:confuion matrices}
 We perform 1-nearest-neighbor classification task for MNIST, Fashion-MNIST, SVHN, CIFAR10. We compute the L2 distance in the latent space of VAE, IGEBM and CEBM, and also in pixel space. We visualize the confusion matrices
 \begin{figure}[!h]
@@ -959,71 +959,71 @@ We perform 1-nearest-neighbor classification task for MNIST, Fashion-MNIST, SVHN
 \label{appendix:confusion-matrices-cifar10}
 \end{figure}
 
-\newpage
-\subsection{Out-of-Distribution Detection}
-\label{appendix-sec:ood-detection}
-We compute the AUROC score in OOD detection based on two different score functions.
+% \newpage
+% \subsection{Out-of-Distribution Detection}
+% \label{appendix-sec:ood-detection}
+% We compute the AUROC score in OOD detection based on two different score functions.
 
 
 
-% \setlength{\tabcolsep}{4.5pt}
-% \begin{table*}[!h]
-% \caption{AUROC scores in OOD Detection. We use $\log p_{\q}(\vx)$ and $\| \nabla_{\vx}\log p_{\q}(\vx)\|$ as score functions.The left block shows results of the models trained on F-MNIST and tested on MNIST, E-MNIST, Constant (C); The right block shows results of the models trained on CIFAR-10 and tested on SVHN, Texture and Constant (C).}
-% \centering
-% \begin{tabular}{l|ccc|ccc||ccc|ccc}
-% \toprule
-% & \multicolumn{6}{c||}{Fashion-MNIST} &    \multicolumn{6}{c}{CIFAR-10}\\
-% & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c||}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} &  \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$}\\
-% \midrule
-%             &  MNIST  & E-MNIST& C &  MNIST & E-MNIST & C &  SVHN & Texture & C &  SVHN & Texture & C \\
-% \midrule
-% VAE         & 50 & 39 & 9 & 61 & 57 & 1  & 42 & \textbf{58} & 41 & 38 & \textbf{51} & 37 \\
-% IGEBM       & 35 & 36 & 90 & 78 & 82 & 96& 45 & 31 & 64 & 33 & 17 & \textbf{62} \\
-% CEBM        & 37 & 34 & 90 & \textbf{82} & \textbf{89} & \textbf{98} & 47 & 32 & \textbf{66} & 31 & 17 & 54 \\
-% CEBMM       & \textbf{56} & \textbf{56} & \textbf{92} & 56 & 80 & 95     & \textbf{55} & 30 & 62 & \textbf{40} & 23 & \textbf{62}  \\
-% \bottomrule
-% \end{tabular}
-% \label{tab:ood-detection}
-% \end{table*}
+% % \setlength{\tabcolsep}{4.5pt}
+% % \begin{table*}[!h]
+% % \caption{AUROC scores in OOD Detection. We use $\log p_{\q}(\vx)$ and $\| \nabla_{\vx}\log p_{\q}(\vx)\|$ as score functions.The left block shows results of the models trained on F-MNIST and tested on MNIST, E-MNIST, Constant (C); The right block shows results of the models trained on CIFAR-10 and tested on SVHN, Texture and Constant (C).}
+% % \centering
+% % \begin{tabular}{l|ccc|ccc||ccc|ccc}
+% % \toprule
+% % & \multicolumn{6}{c||}{Fashion-MNIST} &    \multicolumn{6}{c}{CIFAR-10}\\
+% % & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c||}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} &  \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$}\\
+% % \midrule
+% %             &  MNIST  & E-MNIST& C &  MNIST & E-MNIST & C &  SVHN & Texture & C &  SVHN & Texture & C \\
+% % \midrule
+% % VAE         & 50 & 39 & 9 & 61 & 57 & 1  & 42 & \textbf{58} & 41 & 38 & \textbf{51} & 37 \\
+% % IGEBM       & 35 & 36 & 90 & 78 & 82 & 96& 45 & 31 & 64 & 33 & 17 & \textbf{62} \\
+% % CEBM        & 37 & 34 & 90 & \textbf{82} & \textbf{89} & \textbf{98} & 47 & 32 & \textbf{66} & 31 & 17 & 54 \\
+% % CEBMM       & \textbf{56} & \textbf{56} & \textbf{92} & 56 & 80 & 95     & \textbf{55} & 30 & 62 & \textbf{40} & 23 & \textbf{62}  \\
+% % \bottomrule
+% % \end{tabular}
+% % \label{tab:ood-detection}
+% % \end{table*}
 
-\begin{table}[!h]
-    \centering
-    \label{tab:ood-detection}
-    \subtable[Models Trained on Fashion-MNIST.][c]{
-    \begin{tabular}{l|ccc|ccc}
-    \toprule
-    % & \multicolumn{6}{c||}{Fashion-MNIST} \\
-    & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} \\
-    \midrule
-    &  MNIST  & E-MNIST& C &  MNIST & E-MNIST & Constant  \\
-    \midrule
-    VAE         & 50 & 39 & 9 & 61 & 57 & 1   \\
-    IGEBM       & 35 & 36 & 90 & 78 & 82 & 96 \\
-    CEBM        & 37 & 34 & 90 & \textbf{82} & \textbf{89} & \textbf{98}  \\
-    CEBMM       & \textbf{56} & \textbf{56} & \textbf{92} & 56 & 80 & 95      \\
-    \bottomrule
-    \end{tabular}
-    }
-    % \vspace{*1em}
-    \subtable[Models Trained on CIFAR-10.][c]{%
-    \label{}
-    \begin{tabular}{l|ccc|ccc}
-    \toprule
-    & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} \\
-    \midrule
-    &  SVHN & Texture & Constant &  SVHN & Texture & Constant \\
-    \midrule
-    VAE & 42 &  \textbf{58} & 41 & 38 & \textbf{51} & 37 \\
-    IGEBM & 45 & 31 & 64 & 33 & 17 & \textbf{62} \\
-    CEBM & 47 & 32 & \textbf{66} & 31 & 17 & 54 \\
-    CEBMM & \textbf{55} & 30 & 62 & \textbf{40} & 23 & \textbf{62} \\
-    \bottomrule
-    \end{tabular}
-    }
-\caption{AUROC scores in OOD Detection. We use $\log p_{\q}(\vx)$ and $\| \nabla_{\vx}\log p_{\q}(\vx)\|$ as score functions. block shows results of the models trained on F-MNIST and tested on MNIST, E-MNIST, Constant; The right block shows results of the models trained on CIFAR-10 and tested on SVHN, Texture and Constant (C).}
-\end{table}
+% \begin{table}[!h]
+%     \centering
+%     \label{tab:ood-detection}
+%     \subtable[Models Trained on Fashion-MNIST.][c]{
+%     \begin{tabular}{l|ccc|ccc}
+%     \toprule
+%     % & \multicolumn{6}{c||}{Fashion-MNIST} \\
+%     & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} \\
+%     \midrule
+%     &  MNIST  & E-MNIST& C &  MNIST & E-MNIST & Constant  \\
+%     \midrule
+%     VAE         & 50 & 39 & 9 & 61 & 57 & 1   \\
+%     IGEBM       & 35 & 36 & 90 & 78 & 82 & 96 \\
+%     CEBM        & 37 & 34 & 90 & \textbf{82} & \textbf{89} & \textbf{98}  \\
+%     CEBMM       & \textbf{56} & \textbf{56} & \textbf{92} & 56 & 80 & 95      \\
+%     \bottomrule
+%     \end{tabular}
+%     }
+%     % \vspace{*1em}
+%     \subtable[Models Trained on CIFAR-10.][c]{%
+%     \label{}
+%     \begin{tabular}{l|ccc|ccc}
+%     \toprule
+%     & \multicolumn{3}{c|}{$\log p_{\q}(\vx)$} & \multicolumn{3}{c}{$\| \nabla_{\vx}\log p_{\q}(\vx)\|$} \\
+%     \midrule
+%     &  SVHN & Texture & Constant &  SVHN & Texture & Constant \\
+%     \midrule
+%     VAE & 42 &  \textbf{58} & 41 & 38 & \textbf{51} & 37 \\
+%     IGEBM & 45 & 31 & 64 & 33 & 17 & \textbf{62} \\
+%     CEBM & 47 & 32 & \textbf{66} & 31 & 17 & 54 \\
+%     CEBMM & \textbf{55} & 30 & 62 & \textbf{40} & 23 & \textbf{62} \\
+%     \bottomrule
+%     \end{tabular}
+%     }
+% \caption{AUROC scores in OOD Detection. We use $\log p_{\q}(\vx)$ and $\| \nabla_{\vx}\log p_{\q}(\vx)\|$ as score functions. block shows results of the models trained on F-MNIST and tested on MNIST, E-MNIST, Constant; The right block shows results of the models trained on CIFAR-10 and tested on SVHN, Texture and Constant (C).}
+% \end{table}
 
-\vspace*{-1.0ex}
+% \vspace*{-1.0ex}
 % \subsection{Out-of-Distribution Detection}\label{sec:exp:ood}
 % \vspace*{-1.0ex}
 
