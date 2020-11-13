@@ -110,7 +110,7 @@
 \maketitle
 
 \begin{abstract}
-Energy-based Models (EBMs) define an unnormalized distribution in terms of an energy function. We develop a new class of conjugate EBMs that represent a joint distribution over data and latent variables. The joint distribution of these models decomposes into an intractable distribution over data and a tractable posterior over latent variables. Conjugate EBMs have similar use cases as variational autoencoders, in the sense that they learn an unsupervised mapping from data to latent variables, but omit a generator, which allows them to learn more flexible notions of similarity between data points. Our experiments demonstrate that conjugate EBMs achieve competitive results in terms of image modelling, predictive power of latent space, and out-of-distribution detection on a variety of datasets. \end{abstract}
+Energy-based Models (EBMs) define an unnormalized distribution in terms of an energy function. In this paper, we develop a new class of conjugate EBMs that represent a joint distribution over data and latent variables. The joint distribution of these models decomposes into an intractable distribution over data and a tractable posterior over latent variables. Conjugate EBMs have similar use cases as variational autoencoders, in the sense that they learn an unsupervised mapping from data to latent variables, but omit a generator, which allows them to learn more flexible notions of similarity between data points. Our experiments demonstrate that conjugate EBMs achieve competitive results in terms of image modelling, predictive power of latent space, and out-of-distribution detection on a variety of datasets. \end{abstract}
 
 % Keywords may be removed
 %\begin{keywords}
@@ -143,22 +143,37 @@ More generally, we can define priors that reflect structure of the underlying mo
 
 VAEs are trained by maximizing the probability of the data. This is done by defining a neural generator that can accurately reconstruct the training examples, which will pose challenges on learning semantically meaningful representations. As an example, consider the problem of scene understanding. Since a VAE is trained to reconstruct all the pixels in an image, it will learn a pixel-perfect representation of the background of the scene, which can be irrelevant features in terms of capture representative objects in the foreground. 
 
-% VAEs are trained by maximizing the probability of the data. This is done by defining a neural generator that can accurately reconstruct all the examples in the training set. Even if we define a prior with a strong inductive bias, training a VAE to reconstruct the training examples need not learn a semantically meaningful representation of the latent variables. As an example, consider the problem of scene understanding. Since a VAE is trained to reconstruct all the pixels in an image, it will learn a pixel-perfect representation of the background of the scene. Therefore, the latent variables will encode all factors of variation that give rise to variation in pixel space, regardless of whether these factors are semantically meaningful.
 \begin{figure*}[!t]
 \label{fig:cebm-knn-cifar10}
 \centering
-\subfigure[Images (top) from each of the classes in CIFAR-10. Subsequent rows show the 2-nearest neighbors in pixel space and the latent space in a VAE and CEBM.][]{
-\includegraphics[width=0.45\linewidth]{figures/overview_figure.pdf}
+\subfigure[][]{
+\includegraphics[width=0.35\linewidth]{figures/overview_figure.pdf}
 \label{fig:nearest-neighbours}
 }%
-\subfigure[Confusion Matrices of 1-NN classification task on CIFAR10. Neighbors are defined by L2 distance in pixel space and latent space of CEBMs and VAEs. See Appendix~\ref{appendix-sec:confuion matrices} for more results.][]{
-\includegraphics[width=0.5\textwidth]{figures/confusion_matrix_22row_cifar10.pdf}
+\subfigure[][]{
+\includegraphics[width=0.45\textwidth]{figures/confusion_matrix_22row_cifar10.pdf}
 \label{fig:cebm-confusion-matrices}
 }
-\caption{Nearest Neighbors in the pixel space and the latent space of CEBM and VAE.}
-
+\vspace*{-1.5ex}
+\caption{(a) shows samples from CIFAR-10, along with the images that correspond to the 2-nearest-neighbors in pixel space, the latent space of a VAE, and the latent space of a CEBM. In (b) we quantify this agreement by computing the fraction of neighbors in each class conditioned on the class of the original image. On average, a fraction of 0.38 of the nearest neighbors are in the same class in the VAE, whereas 0.45 of the neighbors are in the same class in the CEBM.}
 % \caption{K-NN results using latent representations learned by CEBM on CIFAR-10.}
 \end{figure*}
+
+% \begin{figure*}[!t]
+% \label{fig:cebm-knn-cifar10}
+% \centering
+% \subfigure[Images (top) from each of the classes in CIFAR-10. Subsequent rows show the 2-nearest neighbors in pixel space and the latent space in a VAE and CEBM.][]{
+% \includegraphics[width=0.45\linewidth]{figures/overview_figure.pdf}
+% \label{fig:nearest-neighbours}
+% }%
+% \subfigure[Confusion Matrices of 1-NN classification task on CIFAR10. Neighbors are defined by L2 distance in pixel space and latent space of CEBMs and VAEs. See Appendix~\ref{appendix-sec:confuion matrices} for more results.][]{
+% \includegraphics[width=0.5\textwidth]{figures/confusion_matrix_22row_cifar10.pdf}
+% \label{fig:cebm-confusion-matrices}
+% }
+% \caption{Nearest Neighbors in the pixel space and the latent space of CEBM and VAE.}
+
+% % \caption{K-NN results using latent representations learned by CEBM on CIFAR-10.}
+% \end{figure*}
 %\begin{comment}
 % This leads us to consider the question whether it is possible to develop alternatives to VAE-based architectures that can be used to learning representations in a fully unsupervised manner, but do not rely on a generator that tries to faithfully reconstruct the input. It is possible that models that eliminate the requirement of a generator can learn more meaningful representations, in the sense that it becomes easier to discard factors of variation that give rise to variation in pixel space, but should be considered noise.
 %\end{comment}
@@ -501,7 +516,7 @@ Energy-based models \cite{lecun2006tutorial} have a long history in machine lear
 \label{sec:experiments}
 % \vspace*{-1.5ex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+We train with both inductive biases and call them as CEBM (Spherical Gaussian) and CEBMM(Mixutre of Gaussian). See Appendix~\ref{appendix-architectures} and~\ref{appendix-sec:training-details} for architecture and training details.
 
 \begin{figure*}[!t]
 \centering
@@ -586,21 +601,16 @@ CEBMM       & \textbf{56} & \textbf{56} & \textbf{92} & 56 & 80 & 95     & \text
 
 \subsection{Samples and Latent Space}
 \label{sec:exp:quality}
-% \vspace*{-1.5ex}
-% As with other EBMs~\cite{du2019implicit}, we can use SGLD to sample from CEBM. In Figures~\ref{fig:generated-samples} \&~\ref{fig:cebm-mnist}, we show generated samples from CEBM trained on different datasets by running 500 steps of SGLD. Even though the sample quality in CEBMs is far from state-of-the-art generative models, we observe that CEBMs do not suffer from blurriness as VAEs. Furthermore, these sample show that CEBMs are able to do a reasonable job at approximating the data distribution.
-
-% Recent work has often focused on EBMs as an alternative to generative models~\cite{du2019implicit, nijkamp2019anatomy}, where it is natural evaluate model performance in temrs of the the quality of generated samples. While generation is not our intended use case in this paper, such samples do serve as a useful diagnostic, in the sense that they allow us to visually inspect what characteristics of the input data are captured by the learned representation. 
-
-We train our models with both inductive biases and call them as CEBM (Spherical Gaussian) and CEBMM(Mixutre of Gaussian). See Appendix~\ref{appendix-architectures} and Appendix~\ref{appendix-sec:training-details} for architecture and training details. We begin with a qualitative evaluation by visualizing samples. Figures~\ref{fig:generated-samples} shows samples by CEBMs with uniform noise initialization an 500 SGLD steps. 
+\vspace*{-1.5ex}
+We begin with a qualitative evaluation by visualizing samples. Figures~\ref{fig:generated-samples} shows samples by CEBMs with uniform noise initialization an 500 SGLD steps. 
 % While generation is not our intended use case in this paper, such samples do serve as a useful diagnostic, in the sense that they allow us to visually inspect what characteristics of the data are captured by the representation. 
 % The distribution over images is diverse and captures the main characteristics of the input data. 
 % Sample quality is roughly on par with samples from other EBMs \cite{nijkamp2019anatomy}, although it is possible to generate samples with higher visual quality using class-conditional EBMs~\cite{du2019implicit, grathwohl2019your, liu2020hybrid} (which assume access to labels).
 
 % For a quantitative assessment, we report Frechet Inception Distance (FID)~\cite{heusel2017gans} where we compare against Glow~\cite{kingma2018glow}, GMM-VAE~\cite{tomczak2018vae}, and IGEBM~\cite{du2019implicit}. As shown in Table~\ref{tab:fid-scores}, CEBM is able to achieves a competitive FID score. 
-
 To assess to what extent the representation in CEBMs aligns with classes in each dataset, we look at the agreement between the label for each data point and the label of its nearest neighbor in the latent space. Figure~\ref{fig:nearest-neighbours} shows that the distance in pixel space is a poor measure of similarity in this dataset, whereas proximity in the latent space is more likely to agree with class labels in both VAEs and CEBMs. 
-
-In Figure~\ref{fig:cebm-confusion-matrices} we quantify this agreement by computing the fraction of neighbors in each class conditioned on the class of the original image. We see a stronger alignment between classes and the latent representation in CEBMs, which is reflected in higher numbers on the diagonal of the matrix. On average, a fraction of 0.38 of the nearest neighbors are in the same class in the VAE, whereas 0.45 of the neighbors are in the same class in the CEBM. 
+Quantitatively, Figure~\ref{fig:cebm-confusion-matrices} shows a stronger alignment between classes and the latent representation in CEBMs, which is reflected in higher numbers on the diagonal of the matrix.
+% In Figure~\ref{fig:cebm-confusion-matrices} we quantify this agreement by computing the fraction of neighbors in each class conditioned on the class of the original image. We see a stronger alignment between classes and the latent representation in CEBMs, which is reflected in higher numbers on the diagonal of the matrix. On average, a fraction of 0.38 of the nearest neighbors are in the same class in the VAE, whereas 0.45 of the neighbors are in the same class in the CEBM. 
 
 \vspace*{-1.0ex}
 \subsection{Few-shot classification}\label{sec:exp:fewshots}
@@ -612,12 +622,13 @@ We report the classification accuracy on the test set in Table~\ref{tab:few-shot
 
 \subsection{Out-of-Distribution Detection}
 \label{sec:ood}
+\vspace*{-1.5ex}
 EBMs have formed the basis for encouraging results in out-of-distribution (OOD) detection~\cite{du2019implicit,grathwohl2019your}. In Table~\ref{tab:ood-detection}, we report the area under the receiver-operator curve (AUROC) using two score functions: $\log p_\q(x)$ and a gradient-based function proposed by ~\citet{grathwohl2019your}. CEBMs results for OOD detection in most cases improve upon VAE and IGEBM baselines.
 
-\vspace*{-0.5ex}
+\vspace*{-0.45ex}
 \section{Conclusion}
 \label{sec:conclusion}
-\vspace*{-0.5ex}
+\vspace*{-0.45ex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Unsupervised representation  is one of the key goals of training deep generative models. 
